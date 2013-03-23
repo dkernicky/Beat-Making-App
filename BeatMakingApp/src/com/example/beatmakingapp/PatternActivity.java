@@ -39,6 +39,9 @@ public class PatternActivity extends Activity {
 	private static Thread playbackThread;
 	private static Looper l;
 
+	// The code here right now fails to produce an accurate tempo or recording
+	// of sounds -- The SoundPool should probably be placed in its own thread
+	// (So we have 2 Playback Threads)
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pattern_layout);
@@ -53,7 +56,6 @@ public class PatternActivity extends Activity {
 		final int id11 = sp00.load(this, raw.lowtom, 1);
 		final int id12 = sp00.load(this, raw.openhat, 1);
 		final int id13 = sp00.load(this, raw.snare, 1);
-		
 
 		AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
 		final float volume = (float) am
@@ -71,10 +73,8 @@ public class PatternActivity extends Activity {
 					public void run() {
 						if (runThread == true) {
 							long currentTime = SystemClock.elapsedRealtime();
-							timeSinceStart = currentTime
-									- timeAtStart;
-							timeSinceLastBeat = currentTime
-									- timeAtLastBeat;
+							timeSinceStart = currentTime - timeAtStart;
+							timeSinceLastBeat = currentTime - timeAtLastBeat;
 							if (frontQueue.size() > 0) {
 								while (frontQueue.size() > 0
 										&& frontQueue.peek().getOffset() <= timeSinceStart) {
@@ -112,8 +112,8 @@ public class PatternActivity extends Activity {
 							});
 
 						}
-						 handler.postDelayed(this, 1);
-						//handler.post(this);
+						handler.postDelayed(this, 1);
+						// handler.post(this);
 
 					}
 
