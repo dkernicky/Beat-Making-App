@@ -1,38 +1,15 @@
 package com.example.beatmakingapp;
 
-import com.example.beatmakingapp.R;
-
-import android.app.TabActivity;
-import android.content.Intent;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
-import android.widget.TabHost;
-import android.widget.TabHost.OnTabChangeListener;
-import android.widget.TabHost.TabSpec;
 
-public class MainActivity extends TabActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        
-		TabHost tabHost = getTabHost();
-        
-        TabSpec patternSpec = tabHost.newTabSpec("Patterns").setIndicator("Patterns", getResources().getDrawable(R.drawable.ic_launcher));
-        //patternSpec.setIndicator("Patterns");
-        Intent patternIntent = new Intent().setClass(this, PatternActivity.class);
-        patternSpec.setContent(patternIntent);
- 
-        TabSpec trackSpec = tabHost.newTabSpec("Track").setIndicator("Track");
-        //trackSpec.setIndicator("Track");
-        Intent trackIntent = new Intent().setClass(this, TrackActivity.class); 
-        trackSpec.setContent(trackIntent);
-
-        
-        tabHost.addTab(patternSpec);
-        tabHost.addTab(trackSpec);
-        tabHost.setCurrentTab(0);
+        setContentView(R.layout.pattern_relative_layout);
         
     }
 

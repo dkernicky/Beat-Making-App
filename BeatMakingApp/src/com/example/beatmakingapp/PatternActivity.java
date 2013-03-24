@@ -1,11 +1,7 @@
 package com.example.beatmakingapp;
 
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.PriorityQueue;
-import java.util.Queue;
-
-import com.example.beatmakingapp.R.raw;
 
 import android.app.Activity;
 import android.content.Context;
@@ -21,32 +17,31 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
+import com.example.beatmakingapp.R.raw;
+
 public class PatternActivity extends Activity {
 	long timeAtStart = 0;
 	long timeSinceStart = 0;
 	long timeAtLastBeat = 0;
 	long timeSinceLastBeat = 0;
 	boolean runThread = false;
+	boolean currentPlaybackThread = true;
 	int bpm = 120;
 	int bars = 4;
 	int beatInBar = 0;
 	int soundIndex = 0;
 	Comparator<Sound> comp = new LongComparator();
 	PriorityQueue<Sound> backQueue = new PriorityQueue<Sound>(10, comp);
-	Queue<Sound> frontQueue = new LinkedList<Sound>();
+	PriorityQueue<Sound> frontQueue = new PriorityQueue<Sound>(1, comp);
 	private static Handler mainHandler = new Handler();
 	private static SoundPool sp00;
-	private static Thread playbackThread;
-	private static Looper l;
+	private static Thread playbackThread1;
+	private static Looper l1;
 
-	// The code here right now fails to produce an accurate tempo or recording
-	// of sounds -- The SoundPool should probably be placed in its own thread
-	// (So we have 2 Playback Threads)
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pattern_layout);
 		final Context context = this;
-
 		sp00 = new SoundPool(16, AudioManager.STREAM_MUSIC, 0);
 		final int id00 = sp00.load(this, raw.closedhat, 1);
 		final int id01 = sp00.load(this, raw.cymbal, 1);
@@ -64,10 +59,10 @@ public class PatternActivity extends Activity {
 		final ProgressBar progBar = (ProgressBar) findViewById(R.id.progBar);
 		progBar.setProgress(0);
 
-		playbackThread = new Thread(new Runnable() {
+		playbackThread1 = new Thread(new Runnable() {
 			public void run() {
 				Looper.prepare();
-				l = Looper.myLooper();
+				l1 = Looper.myLooper();
 				final Handler handler = new Handler(Looper.myLooper());
 				handler.post(new Runnable() {
 					public void run() {
@@ -79,26 +74,27 @@ public class PatternActivity extends Activity {
 								while (frontQueue.size() > 0
 										&& frontQueue.peek().getOffset() <= timeSinceStart) {
 									final Sound s = frontQueue.remove();
-									mainHandler.post(new Runnable() {
-										public void run() {
-											sp00.play(s.getId(), volume,
-													volume, 1, 0, (float) 1.0);
-										}
-									});
+									//mainHandler.post(new Runnable() {
+									//	public void run() { 
+										sp00.play(s.getId(), volume,
+												volume, 1, 0, (float) 1.0);
+									//	}
+									//});
 								}
 							}
 							if (timeSinceLastBeat >= 60000 / bpm) {
 								mainHandler.post(new Runnable() {
 									public void run() {
-										sp00.play(id00, volume, volume, 1, 0,
-												(float) 1.0);
+										//sp00.play(id00, volume, volume, 1, 0,
+										//		(float) 1.0);
 									}
 								});
 
 								timeAtLastBeat = currentTime;
 								//
 							}
-							if (timeSinceStart >= (240000 * bars) / bpm) {
+							if (timeSinceStart >= ((240000 * bars) / bpm)) {
+								timeSinceStart = 0;
 								timeAtStart = currentTime;
 								frontQueue.clear();
 								frontQueue.addAll(backQueue);
@@ -121,7 +117,7 @@ public class PatternActivity extends Activity {
 				Looper.loop();
 			}
 		}, "PlaybackThread");
-		playbackThread.start();
+		playbackThread1.start();
 
 		final Button trackButton = (Button) findViewById(R.id.track_button);
 		trackButton.setOnClickListener(new View.OnClickListener() {
@@ -288,7 +284,7 @@ public class PatternActivity extends Activity {
 
 	public void onDestroy() {
 		super.onDestroy();
-		l.quit();
+		l1.quit();
 		if (sp00 != null)
 			sp00.release();
 	}
