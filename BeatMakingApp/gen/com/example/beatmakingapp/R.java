@@ -38,22 +38,22 @@ public final class R {
         public static final int yellow=0x7f02000b;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a0034;
-        public static final int b_00=0x7f0a0023;
-        public static final int b_01=0x7f0a0024;
-        public static final int b_10=0x7f0a0025;
-        public static final int b_11=0x7f0a0026;
-        public static final int bl=0x7f0a0027;
-        public static final int br=0x7f0a0028;
+        public static final int action_settings=0x7f0a0035;
+        public static final int b_00=0x7f0a0025;
+        public static final int b_01=0x7f0a0029;
+        public static final int b_10=0x7f0a0026;
+        public static final int b_11=0x7f0a002a;
         public static final int clear_pattern_button=0x7f0a0012;
-        public static final int column=0x7f0a002b;
+        public static final int column=0x7f0a002c;
         public static final int edit_bars=0x7f0a0014;
         public static final int edit_drum_machine_button=0x7f0a001e;
         public static final int edit_tempo=0x7f0a0013;
-        public static final int horizontalScrollView1=0x7f0a002d;
-        public static final int horizontal_scroll_part=0x7f0a002c;
-        public static final int linear_layout_inside_hori_scroll=0x7f0a002e;
-        public static final int lt=0x7f0a002a;
+        public static final int helperVer1=0x7f0a0024;
+        public static final int helperVer2=0x7f0a0028;
+        public static final int horizontalScrollView1=0x7f0a002e;
+        public static final int horizontal_scroll_part=0x7f0a002d;
+        public static final int linear_layout_inside_hori_scroll=0x7f0a002f;
+        public static final int lt=0x7f0a002b;
         public static final int pad_00=0x7f0a0001;
         public static final int pad_01=0x7f0a0002;
         public static final int pad_02=0x7f0a0003;
@@ -76,21 +76,22 @@ public final class R {
         public static final int pattern_number_button=0x7f0a001c;
         public static final int pattern_spinner=0x7f0a0011;
         public static final int play_button=0x7f0a001f;
-        public static final int preview1=0x7f0a002f;
-        public static final int preview2=0x7f0a0030;
-        public static final int preview3=0x7f0a0031;
-        public static final int preview4=0x7f0a0032;
-        public static final int progBar=0x7f0a0021;
+        public static final int preview1=0x7f0a0030;
+        public static final int preview2=0x7f0a0031;
+        public static final int preview3=0x7f0a0032;
+        public static final int preview4=0x7f0a0033;
+        public static final int progBar=0x7f0a0022;
+        public static final int record_button=0x7f0a0021;
         public static final int snap_beat_group=0x7f0a0015;
         public static final int snap_sound_eighth=0x7f0a0019;
         public static final int snap_sound_fourth=0x7f0a0018;
         public static final int snap_sound_half=0x7f0a0017;
         public static final int snap_sound_one=0x7f0a0016;
         public static final int stop_button=0x7f0a0020;
-        public static final int tl=0x7f0a0022;
-        public static final int tr=0x7f0a0029;
+        public static final int td=0x7f0a0027;
+        public static final int tl=0x7f0a0023;
         public static final int track_button=0x7f0a001b;
-        public static final int voice=0x7f0a0033;
+        public static final int voice=0x7f0a0034;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

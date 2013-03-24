@@ -20,11 +20,12 @@ import android.widget.ProgressBar;
 import com.example.beatmakingapp.R.raw;
 
 public class PatternActivity extends Activity {
+	boolean state_playing = false;
+	boolean state_recording = false;
 	long timeAtStart = 0;
 	long timeSinceStart = 0;
 	long timeAtLastBeat = 0;
 	long timeSinceLastBeat = 0;
-	boolean runThread = false;
 	boolean currentPlaybackThread = true;
 	int bpm = 120;
 	int bars = 4;
@@ -66,7 +67,7 @@ public class PatternActivity extends Activity {
 				final Handler handler = new Handler(Looper.myLooper());
 				handler.post(new Runnable() {
 					public void run() {
-						if (runThread == true) {
+						if (state_playing == true) {
 							long currentTime = SystemClock.elapsedRealtime();
 							timeSinceStart = currentTime - timeAtStart;
 							timeSinceLastBeat = currentTime - timeAtLastBeat;
@@ -74,19 +75,19 @@ public class PatternActivity extends Activity {
 								while (frontQueue.size() > 0
 										&& frontQueue.peek().getOffset() <= timeSinceStart) {
 									final Sound s = frontQueue.remove();
-									//mainHandler.post(new Runnable() {
-									//	public void run() { 
-										sp00.play(s.getId(), volume,
-												volume, 1, 0, (float) 1.0);
-									//	}
-									//});
+									// mainHandler.post(new Runnable() {
+									// public void run() {
+									sp00.play(s.getId(), volume, volume, 1, 0,
+											(float) 1.0);
+									// }
+									// });
 								}
 							}
 							if (timeSinceLastBeat >= 60000 / bpm) {
 								mainHandler.post(new Runnable() {
 									public void run() {
-										//sp00.play(id00, volume, volume, 1, 0,
-										//		(float) 1.0);
+										// sp00.play(id00, volume, volume, 1, 0,
+										// (float) 1.0);
 									}
 								});
 
@@ -130,16 +131,29 @@ public class PatternActivity extends Activity {
 		final ImageButton playButton = (ImageButton) findViewById(R.id.play_button);
 		playButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				runThread = true;
+				state_playing = true;
+				playButton.setImageResource(R.drawable.play_button_pressed);
 				timeAtStart = SystemClock.elapsedRealtime();
 				timeAtLastBeat = SystemClock.elapsedRealtime();
+			}
+		});
+	
+		final ImageButton recordButton = (ImageButton) findViewById(R.id.record_button);
+		recordButton.setOnClickListener(new View.OnClickListener() {
+
+			public void onClick(View v) {
+				state_recording = true;
+				recordButton.setImageResource(R.drawable.record_button_pressed);
 			}
 		});
 		final ImageButton stopButton = (ImageButton) findViewById(R.id.stop_button);
 		stopButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				runThread = false;
+				state_playing = false;
+				state_recording = false;
+				playButton.setImageResource(R.drawable.play_button_normal);
+				recordButton.setImageResource(R.drawable.record_button_normal);
 
 			}
 		});
@@ -151,8 +165,9 @@ public class PatternActivity extends Activity {
 					public void run() {
 						mainHandler.post(new Runnable() {
 							public void run() {
-								backQueue.add(new Sound(id00, SystemClock
-										.elapsedRealtime() - timeAtStart));
+								if (state_recording == true)
+									backQueue.add(new Sound(id00, SystemClock
+											.elapsedRealtime() - timeAtStart));
 								sp00.play(id00, volume, volume, 1, 0,
 										(float) 1.0);
 							}
@@ -168,8 +183,9 @@ public class PatternActivity extends Activity {
 					public void run() {
 						mainHandler.post(new Runnable() {
 							public void run() {
-								backQueue.add(new Sound(id01, SystemClock
-										.elapsedRealtime() - timeAtStart));
+								if (state_recording == true)
+									backQueue.add(new Sound(id01, SystemClock
+											.elapsedRealtime() - timeAtStart));
 								sp00.play(id01, volume, volume, 1, 0,
 										(float) 1.0);
 							}
@@ -185,8 +201,9 @@ public class PatternActivity extends Activity {
 					public void run() {
 						mainHandler.post(new Runnable() {
 							public void run() {
-								backQueue.add(new Sound(id02, SystemClock
-										.elapsedRealtime() - timeAtStart));
+								if (state_recording == true)
+									backQueue.add(new Sound(id02, SystemClock
+											.elapsedRealtime() - timeAtStart));
 								sp00.play(id02, volume, volume, 1, 0,
 										(float) 1.0);
 							}
@@ -202,8 +219,9 @@ public class PatternActivity extends Activity {
 					public void run() {
 						mainHandler.post(new Runnable() {
 							public void run() {
-								backQueue.add(new Sound(id03, SystemClock
-										.elapsedRealtime() - timeAtStart));
+								if (state_recording == true)
+									backQueue.add(new Sound(id03, SystemClock
+											.elapsedRealtime() - timeAtStart));
 								sp00.play(id03, volume, volume, 1, 0,
 										(float) 1.0);
 							}
@@ -219,8 +237,9 @@ public class PatternActivity extends Activity {
 					public void run() {
 						mainHandler.post(new Runnable() {
 							public void run() {
-								backQueue.add(new Sound(id10, SystemClock
-										.elapsedRealtime() - timeAtStart));
+								if (state_recording == true)
+									backQueue.add(new Sound(id10, SystemClock
+											.elapsedRealtime() - timeAtStart));
 								sp00.play(id10, volume, volume, 1, 0,
 										(float) 1.0);
 							}
@@ -236,8 +255,9 @@ public class PatternActivity extends Activity {
 					public void run() {
 						mainHandler.post(new Runnable() {
 							public void run() {
-								backQueue.add(new Sound(id11, SystemClock
-										.elapsedRealtime() - timeAtStart));
+								if (state_recording == true)
+									backQueue.add(new Sound(id11, SystemClock
+											.elapsedRealtime() - timeAtStart));
 								sp00.play(id11, volume, volume, 1, 0,
 										(float) 1.0);
 							}
@@ -253,8 +273,9 @@ public class PatternActivity extends Activity {
 					public void run() {
 						mainHandler.post(new Runnable() {
 							public void run() {
-								backQueue.add(new Sound(id12, SystemClock
-										.elapsedRealtime() - timeAtStart));
+								if (state_recording == true)
+									backQueue.add(new Sound(id12, SystemClock
+											.elapsedRealtime() - timeAtStart));
 								sp00.play(id12, volume, volume, 1, 0,
 										(float) 1.0);
 							}
@@ -270,8 +291,9 @@ public class PatternActivity extends Activity {
 					public void run() {
 						mainHandler.post(new Runnable() {
 							public void run() {
-								backQueue.add(new Sound(id13, SystemClock
-										.elapsedRealtime() - timeAtStart));
+								if (state_recording == true)
+									backQueue.add(new Sound(id13, SystemClock
+											.elapsedRealtime() - timeAtStart));
 								sp00.play(id13, volume, volume, 1, 0,
 										(float) 1.0);
 							}
